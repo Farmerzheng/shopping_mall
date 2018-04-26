@@ -32,8 +32,8 @@
                         </a>
                     </li>
                 </ul>
-                <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10" class="more" v-show="moreBoolean">
-                    加载中……^
+                <div class="load-container load1" v-show="moreBoolean">
+                    <div class="loader">Loading...</div>
                 </div>
             </div>
         </div>
@@ -42,6 +42,7 @@
 
 <script>
     import axios from 'axios'
+    import scroll_bottom from '../common/js/scroll_bottom'
     import {
         ERR_OK
     } from '../api/api.config'
@@ -51,14 +52,14 @@
                 goodList: [],
                 sort: 1,
                 page: 1,
-                perPage: 3,
-                busy: true,
-                moreBoolean: true,
-                level:0
+                perPage: 6,
+                moreBoolean: false,
+                level: 0
             }
         },
-        created() {
+        mounted() {
             this.getGoodsList();
+            scroll_bottom.test(this.scroll_to_bottom);
         },
         methods: {
             // 加载首页数据
@@ -68,32 +69,26 @@
                     page: this.page,
                     perPage: this.perPage,
                     sort: this.sort,
-                    level:this.level
+                    level: this.level
                 };
                 this.$axios.get('/goods', {
                     params: param
                 }).then((res) => {
-                         debugger;
-                    if (res.data.status == ERR_OK) {  
-                     
-                        if (flag) {
-                            //滚动到底部加载数据
-                            this.goodList = this.goodList.concat(res.data.result.list);
-                            //加载完数据，启动滚动监听
-                            this.busy = false;
-                        } else {
-                            // 第一次进入页面
-                            this.goodList = res.data.result.list;
-                            this.busy = false;
-                        }
-
-                             //  如果请求不到数据了
-                        if(res.data.result.list.length ===0){
+                    //  debugger;                
+                    if (res.data.status == ERR_OK) {
+                        // 没有数据，什么事情都不做
+                        if (res.data.result.list.length === 0) {
                             // 隐藏加载提示
-                          this.moreBoolean = false;
-                         //   禁用滚动监听
-                          this.busy = true;
-                        }
+                            this.moreBoolean = false;
+                            return;
+                        };
+
+                        setTimeout(() => {
+                            this.moreBoolean = false;
+                            this.goodList = this.goodList.concat(res.data.result.list);
+                        }, 1000);
+                        // 滚动到底部加载数据
+                       
                     }
                 })
             },
@@ -101,27 +96,30 @@
             sortGoods() {
                 this.sort = -1;
                 this.page = 1;
-                //   console.log(this.sort)
+                // 清空列表
+                this.goodList = [];
                 this.getGoodsList();
             },
-            loadMore() {
-                console.log(1);
-                // 停止滚动监听
-                this.busy = true;
-                
-                //官方示例中延迟了1秒，防止滚动条滚动时的频繁请求数据
-                setTimeout(() => {
-                    this.page++;
-                    //     // 这里请求接口去拿数据，实际应该是调用一个请求数据的方法
-                    this.getGoodsList(true);
-                }, 1000);
+            scroll_to_bottom() {
+                // console.log('滚动到底部了');
+                this.page++;
+                this.moreBoolean = true;
+                this.getGoodsList();
             },
-            setPriceLevel(level){
-            //    console.log(level);
-               this.level = level;
-               this.getGoodsList();
+            setPriceLevel(level) {
+                console.log(level);
+                // 如果点击不同的价格区间，先清空数组
+                if (this.level != level) {
+                    // 从第一页开始请求
+                    this.page = 1;
+                    // 置空数组
+                    this.goodList = [];
+                    // 对level重新赋值
+                    this.level = level;
+                }
+                // 请求数据
+                this.getGoodsList();
             }
-            
         }
     }
 </script>
@@ -164,6 +162,7 @@
     }
     .list_wrap {
         width: 100%;
+        margin-bottom: 50px;
     }
     .good_item {
         background-color: #fff;

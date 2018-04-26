@@ -50,7 +50,7 @@ function responseQuery() {
         switch (parseInt(level)) {
             case 0:
                 $gt = 0;
-                $lt = 1000000;
+                $lt = Infinity;
                 break;
             case 1:
                 $gt = 0;
@@ -77,9 +77,9 @@ function responseQuery() {
             }
         }
 
-        if (level > 0) {
-            page = 1
-        }
+        // if (level >= 0) {
+        //     page = 1
+        // }
         // console.log(param)
         // “$lt”	小于
         // “$lte”	小于等于
