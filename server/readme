@@ -1,0 +1,87 @@
+
+
+1、
+   install express globally
+     > npm install express-generator -g
+
+   init a express project
+     > express shopping_mall
+
+   change directory:
+     > cd express
+
+   install dependencies:
+     > npm install
+
+   run the app:
+     > npm start
+
+3.安装package.json中依赖的包文件 （moongose 等）
+  npm install 
+    
+       
+
+2、
+  使用mongoose
+
+  a、创建一个model文件夹，在下面新建goods.js文件
+     goods文件内容如下：
+        let mongoose = require("mongoose");
+        let Schema = mongoose.Schema;
+
+        let productSchema = new Schema({
+            "productId": String,
+            "productName": String,
+            "salePrice": Number,
+            "productImage": String,
+            "productUrl": String
+        })
+
+        module.exports = mongoose.model("Good", productSchema);
+
+  b、在routes文件夹下新建goods.js的路由文件
+
+  c、修改app.js文件（增加goods路由）
+     var goodsRouter = require('./routes/goods');
+     app.use('/goods', goodsRouter);
+
+
+3、启动服务器
+   node bin/www
+
+4、添加静态资源文件（图片资源）到public的images文件夹
+   可以在http://localhost:8080/images/pingheng.jpg访问到对应的图片
+
+5、在 vs中如何调试 node.js 
+   a、关闭服务器
+   b.配置launch.json
+          {
+        "version": "0.2.0",
+        "configurations": [
+            
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "启动程序",
+                "program": "D:/H5/node/shopping_mall/server/bin/www"
+            },
+            {
+                "type": "node",
+                "request": "attach",
+                "name": "附加到端口",
+                "address": "localhost",
+                "port": 3000 // 和www文件端口保持一致
+            }
+            ]
+        }
+
+      c : 打断点
+      d : 启动调试功能（单击绿三角）
+      d : 在浏览器中刷新页面，重新发送请求
+
+      
+
+
+
+
+
