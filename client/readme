@@ -27,3 +27,16 @@ axios的用法
             console.log(res.data);
         });
     }
+
+vue 调试
+config文件夹下的index.js文件的devtool的设置更改为：
+devtool: '#cheap-module-eval-source-map',
+直接在浏览器中打断点就可以调试了   
+
+滚动到底部自动加载如何实现？
+1、监听滚动条距离窗口底部的距离（用到了scroll_bottom.js）
+2、滚动到底部的时候,this.page++，然后再次发送网络请求
+   注意：将原来的商品列表数组与新请求的商品列表数组合并
+
+懒加载的动态图如何实现？
+通过CSS3实现（load.css）   

@@ -74,7 +74,7 @@
                 this.$axios.get('/goods', {
                     params: param
                 }).then((res) => {
-                    //  debugger;                
+                                
                     if (res.data.status == ERR_OK) {
                         // 没有数据，什么事情都不做
                         if (res.data.result.list.length === 0) {

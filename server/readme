@@ -79,7 +79,14 @@
       d : 启动调试功能（单击绿三角）
       d : 在浏览器中刷新页面，重新发送请求
 
-      
+6、分页查询代码
+        Good.find({salePrice: {$gte: 100, $lte: 500}})
+            .sort({ 'salePrice': sort }) //1 是升序 -1是降序
+            .limit(perPage)
+            .skip((page - 1) * perPage)
+            .exec(function(err, doc) {
+              //将数据库拿到的doc返回给客户端
+            })      
 
 
 
