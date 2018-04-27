@@ -21,6 +21,8 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// 定义一级路由
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/goods', goodsRouter);

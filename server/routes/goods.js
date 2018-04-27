@@ -2,8 +2,8 @@ let express = require("express");
 let router = express.Router();
 
 let mongoose = require("mongoose");
-// 判断模型名是否是加s，如果是直接返回模型名；否则进行复数转化正则匹配；
-let Good = require("../model/goods");
+
+
 
 // 链接数据库
 
@@ -20,7 +20,7 @@ mongoose.connect("mongodb://zhangsan:123456@127.0.0.1:27017/my_db?authSource=adm
 // 链接成功
 mongoose.connection.on("connected", function() {
         console.log("mongodb connected success");
-        responseQuery();
+        response();
     })
     // 链接失败
 mongoose.connection.on("error", function() {
@@ -31,7 +31,16 @@ mongoose.connection.on("disconnected", function() {
     console.log("mongodb connected disconnected");
 })
 
-function responseQuery() {
+function response() {
+
+    //查询商品列表数据
+    query_goods();
+
+    // 加入购物车
+    add_cart();
+}
+
+function query_goods() {
     router.get("/", function(req, res, next) {
 
         // 在控制台打印req,看看前端传过来的参数在哪里？
@@ -41,9 +50,7 @@ function responseQuery() {
         let page = parseInt(req.query.page);
         let perPage = parseInt(req.query.perPage);
         let sort = parseInt(req.query.sort);
-        let level = parseInt(req.query.level)
-
-        // console.log(req.query)
+        let level = parseInt(req.query.level);
 
         let $gt = 0;
         let $lt = 0;
@@ -77,20 +84,9 @@ function responseQuery() {
             }
         }
 
-        // if (level >= 0) {
-        //     page = 1
-        // }
-        // console.log(param)
-        // “$lt”	小于
-        // “$lte”	小于等于
-        // “$gt”	大于
-        // “$gte”	大于等于
-        // “$ne”	不等于
-        //  Model.find({“age”:{ “$get”:18 , “$lte”:30 } } );
-        // 查询 age 大于等于18并小于等于30的文档
+        // 获取操作数据库的商品列表模型
+        let Good = require("../model/goods");
 
-        // 根据前台传过来的参数在数据库拿数据
-        // 分页查询 limit skip
         Good.find(param)
             .sort({ 'salePrice': sort }) //1 是升序 -1是降序
             .limit(perPage)
@@ -116,6 +112,56 @@ function responseQuery() {
                 }
 
             })
+    })
+}
+
+function add_cart() {
+    // 定义二级路由
+    router.post('/addCart', function(req, res, next) {
+
+        // 获取用户模型
+        let User = require("../model/user");
+
+        // 获取前台传过来的 userId 和 productId
+
+        let userId = req.body.params.userId;
+
+        let productId = req.body.params.productId;
+
+        // 在数据库users集合中查找userId 对应的数据
+
+        User.find({ "userId": userId })
+            .exec(function(err, doc) {
+                //输入以下网址进行查询 http://localhost:3000/goods/?page=1&perPage=4&sort=1
+                // console.log(doc)
+
+                if (err) {
+                    res.json({
+                        status: "1",
+                        error: err.message
+                    })
+                } else {
+                    res.json({
+                        status: "0",
+                        msg: "成功了",
+                        result: {
+                            count: doc.length,
+                            list: doc
+                        }
+                    })
+                }
+
+            })
+
+
+
+
+
+
+
+
+
+
     })
 }
 

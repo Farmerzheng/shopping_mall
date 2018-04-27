@@ -27,7 +27,7 @@
                             <div class="item_des">
                                 <p class="product_name">{{item.productName}}</p>
                                 <p class="product_price">￥{{item.salePrice}}</p>
-                                <p class="add_cart">加入购物车</p>
+                                <p class="add_cart" @click="addToCart(item.productId)">加入购物车</p>
                             </div>
                         </a>
                     </li>
@@ -74,7 +74,6 @@
                 this.$axios.get('/goods', {
                     params: param
                 }).then((res) => {
-                                
                     if (res.data.status == ERR_OK) {
                         // 没有数据，什么事情都不做
                         if (res.data.result.list.length === 0) {
@@ -82,13 +81,11 @@
                             this.moreBoolean = false;
                             return;
                         };
-
                         setTimeout(() => {
                             this.moreBoolean = false;
                             this.goodList = this.goodList.concat(res.data.result.list);
                         }, 1000);
                         // 滚动到底部加载数据
-                       
                     }
                 })
             },
@@ -119,6 +116,16 @@
                 }
                 // 请求数据
                 this.getGoodsList();
+            },
+            addToCart(id) {
+                this.$axios.post('/goods/addCart', {
+                    params: {
+                        userId: this.page,
+                        productId:id
+                    }
+                }).then((res) => {
+              
+                })
             }
         }
     }
@@ -165,29 +172,48 @@
         margin-bottom: 50px;
     }
     .good_item {
-        background-color: #fff;
         display: inline-block;
         margin: 10px 10px;
         border: 1px solid #eee;
+        width: 300px;
+        height: 428px;
+    }
+    .good_item:hover {
+        background-color: #e73b3b;
+    }
+    .good_item a {
+        display: block;
+        width: 296px;
+        height: 424px;
+        margin: 2px 2px;
+        background-color: #fff;
     }
     .product_image {
         width: 300px;
+    }
+    .item_img {
+        width: 100%;
+    }
+    .item_img img {
+        width: 100%;
     }
     .item_des {
         width: 100%;
         text-align: left;
     }
-    .item_des p {
-        margin: 10px 10px;
+    .item_des .product_name {
+        padding: 10px 0 10px 30px;
+        font-size: 20px;
+        font-weight: bold;
     }
     .add_cart {
         width: 200px;
         height: 30px;
-        display: inline-block;
         line-height: 30px;
         border: 1px solid #d1434a;
         color: #d1434a;
         text-align: center;
+        margin: 10px auto;
     }
     .more {
         text-align: center;

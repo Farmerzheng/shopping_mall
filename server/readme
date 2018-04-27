@@ -88,6 +88,21 @@
               //将数据库拿到的doc返回给客户端
             })      
 
+7、在app.js里面定义的为一级路由
+   
+    app.use('/', indexRouter);
+    app.use('/users', usersRouter);
+    app.use('/goods', goodsRouter);
+   
+   在routes/goods.js里面定义的路由为二级路由
+
+     router.post('/addCart', function(req, res, next) {
+
+    })
+   
+   注意路由路径不能写成 '/goods/addCart'
+
+
 
 
 
