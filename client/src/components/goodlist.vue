@@ -20,7 +20,7 @@
             <div class="list pull_right">
                 <ul class="list_wrap">
                     <li class="good_item" v-for="item in goodList">
-                        <a href="">
+                        <a href="javascript:void(0)" >
                             <div class="item_img">
                                 <img class="product_image" v-bind:src='"/images/"+item.productImage' />
                             </div>
@@ -120,11 +120,11 @@
             addToCart(id) {
                 this.$axios.post('/goods/addCart', {
                     params: {
-                        userId: this.page,
+                        userId: '2',
                         productId:id
                     }
                 }).then((res) => {
-              
+                        console.log(res)
                 })
             }
         }
