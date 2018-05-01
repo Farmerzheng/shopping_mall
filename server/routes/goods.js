@@ -138,7 +138,7 @@ function add_cart() {
         // 在数据库users集合中查找userId 对应的用户
         let findUserPromise = new Promise((resolve, reject) => {
             if (userId) {
-                User.find({ "userId": userId })
+                User.findOne({ "userId": userId })
                     .exec(function(err, userDoc) {
                         if (err) {
                             res.json({
@@ -162,7 +162,7 @@ function add_cart() {
                                 status: "1",
                                 error: err.message
                             })
-                        } else {
+                        } else if (goodDoc) {
                             let data = {
                                 goodDoc: goodDoc,
                                 userDoc: userDoc
@@ -176,15 +176,43 @@ function add_cart() {
             .then((data) => {
                 // 将商品模型插入用户模型的cartList列表
 
-                // 假设商品数量是1
-                data.goodDoc.productNum = '10000';
-                // 假设商品被选中
-                data.goodDoc.checked = '1';
+                let haveGoodDocBoolean = false;
 
-                // 往用户模型的cartList数组中插入选中的商品模型
-                data.userDoc['0'].cartList.push(data.goodDoc)
-                    // 保存插入的商品模型模型
-                data.userDoc['0'].save(function(err, doc) {
+                //  判断用户模型的cartList列表有没有商品模型
+                for (let i = 0; i < data.userDoc.cartList.length; i++) {
+                    console.log(data.userDoc.cartList[i])
+                    console.log(data.userDoc.cartList[i].productId)
+                    if (data.userDoc.cartList[i].productId == productId) {
+                        haveGoodDocBoolean = true;
+                        // 有
+                        // cartList列表的商品数量自增
+                        console.log(data.userDoc.cartList[i].productNum)
+                        console.log(parseInt(data.userDoc.cartList[i].productNum) + 1)
+
+                        data.userDoc.cartList[i].productNum = parseInt(data.userDoc.cartList[i].productNum) + 1;
+
+                    }
+                }
+
+                // 如果cartList列表有此商品模型，直接返回
+                if (!haveGoodDocBoolean) {
+                    addGoodDocToUserDocCartList();
+                }
+
+                function addGoodDocToUserDocCartList() {
+                    // 假设商品数量是1
+                    data.goodDoc._doc.productNum = 1;
+
+                    // 假设商品被选中
+                    data.goodDoc._doc.checked = 0;
+
+                    // 往用户模型的cartList数组中插入选中的商品模型
+                    data.userDoc.cartList.push(data.goodDoc);
+
+                }
+
+                // 保存插入的商品模型模型
+                data.userDoc.save(function(err, doc) {
                     if (err) {
 
                         res.json({
@@ -200,6 +228,8 @@ function add_cart() {
                         })
                     }
                 })
+
+
             })
     })
 }

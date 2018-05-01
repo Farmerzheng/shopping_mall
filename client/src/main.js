@@ -8,6 +8,29 @@ import axios from 'axios'
 import './common/css/common.css'
 import './common/css/load.css'
 
+// 引入element-ui
+import {
+    Button,
+    Input,
+    Col,
+    Row,
+    MessageBox,
+    Message,
+    Form,
+    FormItem
+} from 'element-ui';
+
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$message = Message;
+
+Vue.use(Button)
+Vue.use(Input)
+Vue.use(Col)
+Vue.use(Row)
+Vue.use(Form)
+Vue.use(FormItem)
+
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios;

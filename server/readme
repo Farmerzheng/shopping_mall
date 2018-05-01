@@ -104,8 +104,6 @@
 
 8、promise用法
 
-
-
         // 在数据库users集合中查找userId 对应的用户
         let findUserPromise = new Promise((resolve, reject) => {
             if (userId) {

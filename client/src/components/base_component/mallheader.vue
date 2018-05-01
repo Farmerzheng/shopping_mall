@@ -7,24 +7,30 @@
       <ul class="user pull_right">
         <li class="username">王争</li>
         <li class="logout">注销</li>
-        <li class="login">登录</li>
+        <li class="login" @click="showLogin">登录</li>
         <li class="cart">购物车</li>
       </ul>
     </div>
+    <login v-show="loginFlag"></login>
   </div>
 </template>
 
 <script>
-
+  import Login from './login.vue'
   export default {
     data() {
-      return {}
+      return {
+        loginFlag: false
+      }
     },
-    created() {
-      
-    },
+    created() {},
     methods: {
-  
+      showLogin() {
+        this.loginFlag = true
+      }
+    },
+    components: {
+      Login
     }
   }
 </script>
@@ -36,18 +42,18 @@
     height: 80px;
     margin: 0 auto;
   }
-  .logo{
+  .logo {
     height: 80px;
   }
-  .logo img{
-    margin-top:15px;
+  .logo img {
+    margin-top: 15px;
   }
   .user {
     line-height: 80px;
   }
-  .user li{
-    cursor:pointer;
+  .user li {
+    cursor: pointer;
     display: inline-block;
-    margin:0 10px;
+    margin: 0 10px;
   }
 </style>
