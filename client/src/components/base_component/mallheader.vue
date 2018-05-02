@@ -11,22 +11,22 @@
         <li class="cart">购物车</li>
       </ul>
     </div>
-    <login v-show="loginFlag"></login>
+    <login :show='showLoginFlag'></login>
   </div>
 </template>
 
 <script>
-  import Login from './login.vue'
+  import Login from './login.vue' 
   export default {
     data() {
       return {
-        loginFlag: false
+        showLoginFlag: false
       }
     },
     created() {},
     methods: {
       showLogin() {
-        this.loginFlag = true
+        this.showLoginFlag = true
       }
     },
     components: {
