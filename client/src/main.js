@@ -20,6 +20,11 @@ import {
     FormItem
 } from 'element-ui';
 
+//vuex
+import store from './store/index';
+
+
+
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$message = Message;
@@ -39,6 +44,7 @@ Vue.prototype.$axios = axios;
 new Vue({
     el: '#app',
     router,
+    store,
     components: { App },
     template: '<App/>'
 })

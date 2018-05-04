@@ -5,29 +5,43 @@
         <img src="../../assets/logo.png" alt="华为商城">
       </h1>
       <ul class="user pull_right">
-        <li class="username">王争</li>
-        <li class="logout">注销</li>
-        <li class="login" @click="showLogin">登录</li>
+        <li class="username">{{username}}</li>
+       
+        <li>
+          <span v-show="loginState">退出</span>
+          <span class="login" @click="show" v-show="!loginState">登录</span>
+        </li>
         <li class="cart">购物车</li>
       </ul>
     </div>
-    <login :show='showLoginFlag'></login>
+    <login :show='showLogin'></login>
   </div>
 </template>
 
 <script>
-  import Login from './login.vue' 
+  import Login from './login.vue'
+  import {
+    mapGetters,
+    mapMutations
+  } from 'vuex';
   export default {
     data() {
-      return {
-        showLoginFlag: false
-      }
+      return {}
     },
-    created() {},
+    computed: {
+      ...mapGetters([
+        'showLogin',
+        'loginState',
+        'username'
+      ])
+    },
     methods: {
-      showLogin() {
-        this.showLoginFlag = true
-      }
+      show() {
+        this.showBox(true);
+      },
+      ...mapMutations({
+        showBox: 'SET_SHOWLOGIN'
+      })
     },
     components: {
       Login
