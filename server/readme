@@ -16,10 +16,9 @@
    run the app:
      > npm start
 
-3.安装package.json中依赖的包文件 （moongose 等）
-  npm install 
-    
-       
+   安装package.json中依赖的包文件 （moongose 等）
+   npm install 
+     
 
 2、
   使用mongoose
@@ -172,7 +171,47 @@
             })
 
 
+9、服务器向前端发送cookie的方法
+    
+        res.cookie('userId', doc.userId, {
+            path: '/',
+            maxAge: 1000 * 60
+        })
 
+    注：浏览器会自动存储cookie,无需前端存储
+
+10、
+// 退出接口
+router.post('/logout', function(req, res, next) {
+
+    // 将浏览器端的cookie清空
+    res.cookie('userId', '', {
+        path: '/',
+        maxAge: -1
+    })
+
+    //返回浏览器端退出成功信息    
+    res.json({
+        status: '0',
+        msg: '退出成功',
+        result: '退出成功'
+    })
+
+})
+
+
+11、
+在express内部，有一个函数的数组，
+
+每来一个请求，express内部就会执行这个数组中的对应这个请求的函数
+
+在这个函数数组里，每个函数的签名应该像下面那样：
+
+function(req,res){//...}
+但是，实际上是：
+
+function(req,res，next){//...}
+这个next，是指下一个函数
 
 
 

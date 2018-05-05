@@ -53,7 +53,7 @@
                         password: this.password
                     }
                 }).then((res) => {  
-                    // console.log(res)
+                    console.log(res);
 
                     // 改变state中user的状态 
                    this.setUserName(res.data.result.userName)
