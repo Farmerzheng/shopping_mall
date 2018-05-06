@@ -11,3 +11,6 @@ export const loginState = (state) => {
 export const username = (state) => {
     return state.username
 }
+export const showModel = (state) => {
+    return state.showModel
+}

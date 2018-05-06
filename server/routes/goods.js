@@ -55,6 +55,7 @@ function query_goods() {
         // console.log(req);  {page: "1", perPage: "4"}
 
         // let params = req.query;
+
         let page = parseInt(req.query.page);
         let perPage = parseInt(req.query.perPage);
         let sort = parseInt(req.query.sort);

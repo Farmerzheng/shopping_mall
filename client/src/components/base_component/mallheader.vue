@@ -5,12 +5,12 @@
         <img src="../../assets/logo.png" alt="华为商城">
       </h1>
       <ul class="user pull_right">
-        <li class="username" v-show="loginState" >{{username}}</li>
+        <li class="username" v-show="loginState">{{username}}</li>
         <li>
           <span v-show="loginState" @click='logout'>退出</span>
           <span class="login" @click="show" v-show="!loginState">登录</span>
         </li>
-        <li class="cart">购物车</li>
+        <li class="cart" @click='skipToCartList'>购物车</li>
       </ul>
     </div>
     <login :show='showLogin'></login>
@@ -20,6 +20,9 @@
 <script>
   import Login from './login.vue'
   import axios from 'axios'
+  import {
+    ERR_OK
+  } from '../../api/api.config'
   import {
     mapGetters,
     mapMutations
@@ -32,10 +35,27 @@
       ...mapGetters([
         'showLogin',
         'loginState',
-        'username'
+        'username',
+        'showModel'
       ])
     },
+    mounted() {
+      // 校验用户是否登录
+      this.checkLogin();
+    },
     methods: {
+      checkLogin() {
+        this.$axios.post('/users/checkLogin')
+          .then((res) => {
+            if (res.data.status == ERR_OK) {
+              // 用户已经登录
+              this.setLoginState(true);
+              this.setUserName(res.data.result.userName)
+            } else {
+              // 用户未登录
+            }
+          })
+      },
       show() {
         this.showBox(true);
       },
@@ -43,15 +63,23 @@
         // 发送网络请求，退出登录
         this.$axios.post('/users/logout').then((res) => {
           console.log(res);
-          if(res.data.status == 0){
+          if (res.data.status == ERR_OK) {
             // 退出成功,改变登录状态
             this.setLoginState(false);
+            // 消息提示
+            this.showModel('退出成功');
           }
+        })
+      },
+      skipToCartList() {
+        this.$router.push({
+          path: '/cart'
         })
       },
       ...mapMutations({
         showBox: 'SET_SHOWLOGIN',
-        setLoginState:'SET_LOGINSTATE'
+        setLoginState: 'SET_LOGINSTATE',
+        setUserName: 'SET_USERNAME'
       })
     },
     components: {

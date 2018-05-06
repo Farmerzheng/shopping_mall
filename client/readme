@@ -47,3 +47,25 @@ devtool: '#cheap-module-eval-source-map',
 Vuex
 
 vue缓存
+
+vuex 中全局的方法
+
+const state = {
+    showLogin: false,
+    loginState: false,
+    username: '',
+    // 展示消息提示框的全局方法
+    showModel(message) {
+        this.$message({
+            message: message,
+            type: 'success'
+        });
+    }
+
+};
+
+export default state;
+
+vue 如何实现在函数中触发路由跳转
+
+this.$router.push({path:'/index'})

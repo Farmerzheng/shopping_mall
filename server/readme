@@ -199,19 +199,65 @@ router.post('/logout', function(req, res, next) {
 
 })
 
+express-session 会话模块的使用
 
-11、
-在express内部，有一个函数的数组，
 
-每来一个请求，express内部就会执行这个数组中的对应这个请求的函数
+11、登录拦截
 
-在这个函数数组里，每个函数的签名应该像下面那样：
+   用户的购物车页面、用户的订单页面本来是登陆以后才可以访问的，
+   用户没有登录，是不允许加入购物车的
+   现在我们不需登陆，直接在浏览器输入也可访问，这样是不合理的
+   如果用户没有登录，跳转到登录页面
 
-function(req,res){//...}
-但是，实际上是：
+Express req 的path, baseUrl, originalUrl, url
 
-function(req,res，next){//...}
-这个next，是指下一个函数
+例子：
+var router1 = express.Router();
+
+var router2 = express.Router();
+
+app.use('/r1', router1);
+
+router1.use('/r2', router2);
+
+router2.get('/main', function(req, res) {
+    console.log({path: req.path, baseUrl: req.baseUrl, originalUrl: req.originalUrl, url: req.url});
+    res.send('Hello');
+});
+
+然后请求/r1/r2/main?p1=123&p2=456，终端输出如下：
+
+{ 
+  path: '/main',
+  baseUrl: '/r1/r2',
+  originalUrl: '/r1/r2/main?p1=123&p2=456',
+  url: '/main?p1=123&p2=456'
+}
+
+可以看到，
+originalUrl和url都是带Query String的，
+url不带外边Router的路径。
+baseUrl是外面Router的路径，
+最后path是不带Query String的Router内路径
+
+12、http://  与 https:// ???
+
+13、用户名密码如何加密？
+
+14、 用户校验接口
+  
+  用户登陆后，当我们再次刷新网页的时候，用户名就没有了
+
+  我们需要每次进入页面后判断一下用户是否登录，因此后台需要提供用户校验接口
+
+
+
+
+
+
+
+
+
 
 
 

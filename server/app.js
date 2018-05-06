@@ -23,9 +23,9 @@ app.use(function(req,res,next){
     next();
 });
 
-注册自定义函数要写在要写在下面两句的前面
+注册自定义函数要写在下面这句的前面
+
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
 
 是因为路由后或请求静态资源后，一次请求响应的生命周期实质上已经结束，加在这后面进行请求处理，没有任何意义。
 
@@ -49,7 +49,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// 配置请求的静态资源路径
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 登录拦截
+app.use(function(req, res, next) {
+
+    if (req.cookies.userId ||
+        req.path == '/goods' ||
+        req.originalUrl.indexOf('/login') != -1 ||
+        req.originalUrl.indexOf('/logout') != -1) {
+
+        //浏览器端cookies中有用户ID，说明已经登录，不需要拦截
+
+        // 用户访问商品列表不需要拦截
+
+        // 用户登录也不要拦截
+        next()
+
+    } else {
+        res.json({
+            status: '10001',
+            msg: ' 当前未登录',
+            result: '当前未登录'
+        })
+    }
+
+})
+
+
+
 
 /*app.use(path,callback)中的callback既可以是router对象又可以是函数
 app.get(path,callback)中的callback只能是函数

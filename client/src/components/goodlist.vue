@@ -3,8 +3,8 @@
         <div class="sort_buy clearfix">
             <div class="pull_right">
                 <span>排序：</span>
-                <span>默认</span>
-                <span @click="sortGoods">降序</span>
+                <span class="sort" @click='defaultDoods'>升序</span>
+                <span class="sort" @click="sortGoods">降序</span>
             </div>
         </div>
         <div class="goods clearfix">
@@ -20,7 +20,7 @@
             <div class="list pull_right">
                 <ul class="list_wrap">
                     <li class="good_item" v-for="item in goodList">
-                        <a href="javascript:void(0)" >
+                        <a href="javascript:void(0)">
                             <div class="item_img">
                                 <img class="product_image" v-bind:src='"/images/"+item.productImage' />
                             </div>
@@ -46,6 +46,11 @@
     import {
         ERR_OK
     } from '../api/api.config'
+    import {
+        mapGetters,
+        mapMutations
+    } from 'vuex';
+
     export default {
         data() {
             return {
@@ -57,8 +62,15 @@
                 level: 0
             }
         },
+        computed: {
+            ...mapGetters([
+                'showModel'
+            ])
+        },
         mounted() {
+            // 获取商品列表
             this.getGoodsList();
+            // 监听滚动条是否滚动到底部
             scroll_bottom.test(this.scroll_to_bottom);
         },
         methods: {
@@ -88,6 +100,14 @@
                         // 滚动到底部加载数据
                     }
                 })
+            },
+            defaultDoods() {
+                //默认排序
+                this.sort = 1;
+                this.page = 1;
+                // 清空列表
+                this.goodList = [];
+                this.getGoodsList();
             },
             // 降序
             sortGoods() {
@@ -120,11 +140,21 @@
             addToCart(id) {
                 this.$axios.post('/goods/addCart', {
                     params: {
-                        userId: '2',
-                        productId:id
+                        userId: '222',
+                        productId: id
                     }
                 }).then((res) => {
-                        console.log(res)
+                    if (res.data.status == '10001') {
+                        // 当前未登录
+                        // console.log('当前未登录')
+                     
+                        this.showModel('当前未登录','warning')
+                    } else {
+                        // 加入购物车成功
+                        // console.log('加入购物车成功')
+                      
+                          this.showModel('加入购物车成功')
+                    }
                 })
             }
         }
@@ -188,6 +218,13 @@
         margin: 2px 2px;
         background-color: #fff;
     }
+    .pull_right .sort {
+        padding: 5px 10px;
+    }
+    .pull_right .sort:hover {
+        background-color: #409EFF;
+        color: #fff;
+    }
     .product_image {
         width: 300px;
     }
@@ -214,6 +251,10 @@
         color: #d1434a;
         text-align: center;
         margin: 10px auto;
+    }
+    .add_cart:hover {
+        color: #fff;
+        background-color: #d1434a
     }
     .more {
         text-align: center;
