@@ -181,14 +181,14 @@ function add_cart() {
 
                 //  判断用户模型的cartList列表有没有商品模型
                 for (let i = 0; i < data.userDoc.cartList.length; i++) {
-                    console.log(data.userDoc.cartList[i])
-                    console.log(data.userDoc.cartList[i].productId)
+                    // console.log(data.userDoc.cartList[i])
+                    // console.log(data.userDoc.cartList[i].productId)
                     if (data.userDoc.cartList[i].productId == productId) {
                         haveGoodDocBoolean = true;
                         // 有
                         // cartList列表的商品数量自增
-                        console.log(data.userDoc.cartList[i].productNum)
-                        console.log(parseInt(data.userDoc.cartList[i].productNum) + 1)
+                        // console.log(data.userDoc.cartList[i].productNum)
+                        // console.log(parseInt(data.userDoc.cartList[i].productNum) + 1)
 
                         data.userDoc.cartList[i].productNum = parseInt(data.userDoc.cartList[i].productNum) + 1;
 
@@ -205,7 +205,7 @@ function add_cart() {
                     data.goodDoc._doc.productNum = 1;
 
                     // 假设商品被选中
-                    data.goodDoc._doc.checked = 0;
+                    data.goodDoc._doc.checked = 1;
 
                     // 往用户模型的cartList数组中插入选中的商品模型
                     data.userDoc.cartList.push(data.goodDoc);

@@ -8,6 +8,12 @@ import axios from 'axios'
 import './common/css/common.css'
 import './common/css/load.css'
 
+// 导入全局过滤器函数
+import { currency } from './common/js/currency'
+// 注册全局过滤器函数
+Vue.filter('currency', currency)
+
+
 // 引入element-ui
 import {
     Button,
@@ -28,6 +34,7 @@ import store from './store/index';
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm;
 
 Vue.use(Button)
 Vue.use(Input)

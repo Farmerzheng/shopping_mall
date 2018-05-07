@@ -14,3 +14,7 @@ export const username = (state) => {
 export const showModel = (state) => {
     return state.showModel
 }
+
+export const showMessageBox = (state) => {
+    return state.showMessageBox
+}

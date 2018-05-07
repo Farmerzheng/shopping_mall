@@ -103,7 +103,7 @@ router.get('/cart', function(req, res, next) {
     let param = { userId: req.cookies.userId };
 
     User.findOne(param, function(err, doc) {
-        console.log(err, doc)
+        // console.log(err, doc)
         if (doc) {
             res.json({
                 status: '0',
@@ -124,6 +124,94 @@ router.get('/cart', function(req, res, next) {
 
 })
 
+// 删除当前用户购物车中的某件商品
+router.get('/delete', function(req, res, next) {
+
+    let userId = req.cookies.userId;
+    let productId = req.query.productId;
+
+    User.update({ userId: userId }, { $pull: { 'cartList': { productId: productId } } }, function(err, doc) {
+
+        if (doc) {
+            res.json({
+                status: 0,
+                msg: '删除成功',
+                result: '删除成功'
+            })
+        } else {
+            res.json({
+                status: 1,
+                msg: '删除失败',
+                result: '删除失败'
+            })
+        }
+    })
+
+})
+
+// 更改用户购物车中的商品数量
+router.get('/editCartList', function(req, res, next) {
+
+    let userId = req.cookies.userId;
+    let productId = req.query.productId;
+    let productNum = req.query.productNum;
+    let checked = req.query.checked
+
+    User.update({
+        'userId': userId,
+        'cartList.productId': productId
+    }, {
+        'cartList.$.productNum': productNum, //更新子文档
+        'cartList.$.checked': checked
+    }, function(err, doc) {
+        if (doc) {
+            res.json({
+                status: '0',
+                msg: '更新成功',
+                result: '更新成功'
+            })
+        } else {
+            res.json({
+                status: '1',
+                msg: '更新失败',
+                result: '更新失败'
+            })
+        }
+    })
+})
+
+// 购物车全选功能接口
+router.get('/checkAll', function(req, res, next) {
+    let userId = req.cookies.userId;
+    let checkAllFlag = req.query.checkAllFlag == 'true' ? '1' : '0';
+
+    User.findOne({ userId: userId }, function(err, doc) {
+        if (doc) {
+            // 找到对应用户
+            doc.cartList.forEach(function(item) {
+                item.checked = checkAllFlag;
+            })
+
+            doc.save(function(err, doc) {
+                if (doc) {
+                    res.json({
+                        status: '0',
+                        msg: '全选成功',
+                        result: '全选成功'
+                    })
+                }
+            })
+
+
+        } else {
+            res.json({
+                status: '1',
+                msg: '全选失败',
+                result: '全选失败'
+            })
+        }
+    })
+})
 
 
 module.exports = router;

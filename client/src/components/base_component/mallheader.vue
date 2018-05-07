@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="navbar clearfix">
-      <h1 class="logo pull_left">
+      <h1 class="logo pull_left" @click='toHome'>
         <img src="../../assets/logo.png" alt="华为商城">
       </h1>
       <ul class="user pull_right">
@@ -44,6 +44,9 @@
       this.checkLogin();
     },
     methods: {
+      toHome(){
+          // 返回首页
+      },
       checkLogin() {
         this.$axios.post('/users/checkLogin')
           .then((res) => {

@@ -26,7 +26,7 @@
                             </div>
                             <div class="item_des">
                                 <p class="product_name">{{item.productName}}</p>
-                                <p class="product_price">￥{{item.salePrice}}</p>
+                                <p class="product_price">{{item.salePrice|currency('￥')}}</p>
                                 <p class="add_cart" @click="addToCart(item.productId)">加入购物车</p>
                             </div>
                         </a>
@@ -50,7 +50,6 @@
         mapGetters,
         mapMutations
     } from 'vuex';
-
     export default {
         data() {
             return {
@@ -147,13 +146,11 @@
                     if (res.data.status == '10001') {
                         // 当前未登录
                         // console.log('当前未登录')
-                     
-                        this.showModel('当前未登录','warning')
+                        this.showModel('当前未登录', 'warning')
                     } else {
                         // 加入购物车成功
                         // console.log('加入购物车成功')
-                      
-                          this.showModel('加入购物车成功')
+                        this.showModel('加入购物车成功')
                     }
                 })
             }
@@ -261,5 +258,10 @@
         line-height: 60px;
         background-color: #eee;
         margin-bottom: 60px;
+    }
+    .product_price {
+        padding-left: 27px;
+        font-size: 19px;
+        color: #CA141D;
     }
 </style>
