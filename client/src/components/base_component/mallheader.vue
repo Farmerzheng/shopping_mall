@@ -2,7 +2,7 @@
   <div class="header">
     <div class="navbar clearfix">
       <h1 class="logo pull_left" @click='toHome'>
-        <img src="../../assets/logo.png" alt="华为商城">
+        <img src="../../assets/images/logo.png" alt="华为商城">
       </h1>
       <ul class="user pull_right">
         <li class="username" v-show="loginState">{{username}}</li>
@@ -44,9 +44,10 @@
       this.checkLogin();
     },
     methods: {
-      toHome(){
-          // 返回首页
+      toHome() {
+        // 返回首页
       },
+      // 检查用户是否登录
       checkLogin() {
         this.$axios.post('/users/checkLogin')
           .then((res) => {
@@ -75,9 +76,15 @@
         })
       },
       skipToCartList() {
-        this.$router.push({
-          path: '/cart'
-        })
+        // 判断用户是否登录
+        console.log(this.loginState)
+        if (this.loginState == true) {
+          this.$router.push({
+            path: '/cart'
+          })
+        } else {
+            this.showModel('用户未登录');
+        }
       },
       ...mapMutations({
         showBox: 'SET_SHOWLOGIN',

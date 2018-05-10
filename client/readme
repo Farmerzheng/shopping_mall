@@ -114,3 +114,47 @@ Vue 中的过滤器使用
 全局过滤器
 
 在main.js中导入currency.js
+
+
+Vue当中绑定类（当limit大于3的时候open类被绑定上去）
+:class="{'open':limit>3}"
+
+
+好好研究下面代码！
+点击盒子的时候让  checkIndex = index
+当 checkIndex ==  index 的时候绑定  active 类
+v-for 中的默认属性 index （item的索引）
+<div class="address_item"  v-for='(item,index) in addressListFilter' :class="{'active':checkIndex==index}" @click='checkIndex=index'>
+
+使用vscode，新建vue模板
+文件 --> 首选项 --> 用户代码片段  --> 输入vue，选择vue.json 
+复制以下代码到vue.json
+
+{
+    "Print to console": {
+        "prefix": "vue",
+        "body": [
+            "<template>",
+            "  <div class=\"page\">\n",
+            "  </div>",
+            "</template>\n",
+            "<script type=\"text/ecmascript-6\">",
+            "export default {",
+            "  data() {",
+            "    return {\n",
+            "    }",
+            "  },",
+            "  components: {\n",
+            "  }",
+            "}",
+            "</script>\n",
+            "<style scoped lang=\"stylus\">",
+            "</style>",
+            "$2"
+        ],
+        "description": "Log output to console"
+    }
+}
+
+测试方法： 新建vue后缀文件，输入vue，按下tab键，OK
+
