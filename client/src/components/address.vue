@@ -3,9 +3,16 @@
         <mall-header></mall-header>
         <router>
             <span class="secondary_routing" slot='secondary_routing'>地址列表
-                </span>
+                        </span>
         </router>
-        <process></process>
+        <process>
+            <div slot='process_list'>
+                <li class="process_item active">地址列表</li>
+                <li class="process_item">订单确认</li>
+                <li class="process_item">支付</li>
+                <li class="process_item">查看订单</li>
+            </div>
+        </process>
         <div class="address_list clearfix">
             <div class="address_item" v-for='(item,index) in addressListFilter' :class="{'active':item.isDefault==true}" @click='setDefaultAddress(index,item)'>
                 <div class="address_item_wrap">
@@ -27,8 +34,7 @@
             </div>
         </div>
         <div class="submit_order clearfix">
-            <span class="submit_btn"> 提交订单</span>
-           
+            <span class="submit_btn" @click='submitOrder'> 提交订单</span>
         </div>
         <foot></foot>
     </div>
@@ -99,6 +105,11 @@
                 } else {
                     this.limit = 3;
                 }
+            },
+            submitOrder() {
+                this.$router.push({
+                    path: "/orderConfirm"
+                });
             }
         },
         components: {
@@ -115,7 +126,6 @@
     .secondary_routing {
         color: #ca141d;
     }
-   
     .address_list {
         width: 1200px;
         margin: 20px auto;
@@ -168,18 +178,18 @@
     .open .down {
         display: none;
     }
-    .submit_order{
-        width:1200px;
-        margin:0 auto;
-        padding-bottom:20px;
+    .submit_order {
+        width: 1200px;
+        margin: 0 auto;
+        padding-bottom: 20px;
     }
-    .submit_btn{
+    .submit_btn {
         display: inline-block;
-        width:300px;
-        padding:10px 0;
+        width: 300px;
+        padding: 10px 0;
         box-sizing: border-box;
         background-color: #ca141d;
-        color:#fff;
+        color: #fff;
         text-align: center;
         font-size: 18px;
         cursor: pointer;

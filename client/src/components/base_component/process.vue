@@ -1,10 +1,7 @@
 <template>
     <div class="process">
         <ul class="process_wraper clearfix">
-            <li class="process_item address">地址列表</li>
-            <li class="process_item order">订单确认</li>
-            <li class="process_item payment">支付</li>
-            <li class="process_item review">查看订单</li>
+             <slot name='process_list'></slot>          
         </ul>
     </div>
 </template>
@@ -21,8 +18,7 @@
 <style scoped>
     .process {
         width:1200px;
-        margin: 10px auto;
-        
+        margin: 10px auto;        
     }
     .process_item {
         float: left;
@@ -33,7 +29,7 @@
         padding: 5px 0;
         box-sizing: border-box;
     }
-    .address {
+    .active {
         background-color: #ca141d;
         color: #fff;
     }

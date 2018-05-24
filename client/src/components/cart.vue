@@ -103,18 +103,21 @@ export default {
             // console.log(total_price);
             return total_price;
         },
-        ...mapGetters(["showMessageBox"])
+        ...mapGetters(['showMessageBox'])
     },
     mounted() {
         // 获取用户的购物车数据
         this.getCartList();
     },
     methods: {
+       
+        // 点击结算按钮
         checkout() {
             this.$router.push({
                 path: "/address"
             });
         },
+        // 点击取消全选按钮
         deselectAll() {
             this.$axios
                 .get("/users/checkAll", {
@@ -128,6 +131,7 @@ export default {
                     // console.log(this.checkAllFlag, this.cartList)
                 });
         },
+        // 点击全选按钮
         checkAll() {
             this.$axios
                 .get("/users/checkAll", {
@@ -141,17 +145,18 @@ export default {
                     console.log(this.checkAllFlag);
                 });
         },
+        // 获取购物车列表数据
         getCartList() {
             // console.log('请求购物车数据')
             this.$axios.get("/users/cart").then(res => {
                 console.log(res.data)
               
-                    this.cartList = res.data.result;
-                
-
+                    this.cartList = res.data.result;          
+              
               
             });
         },
+        // 点击删除购物车商品删除
         deleteGoods(productId) {
             let self = this;
             // 弹出提示框
@@ -172,6 +177,7 @@ export default {
                     });
             });
         },
+        // 点击商品的加减号按钮
         changeProduct(type, item) {
             item.productNum = parseInt(item.productNum);
             if (type == "minus") {
